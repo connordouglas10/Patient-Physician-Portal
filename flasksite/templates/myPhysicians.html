@@ -1,0 +1,54 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<div id="app">
+    <article v-for = "doctor in docs" class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="#">[[doctor.first_name]] [[doctor.last_name]]</a>
+                <small class="text-muted">[[doctor.email]]</small>
+            </div>
+            <h3><a class="article-title" href="#">Specialty: [[doctor.specialty]]</a></h3>
+            <p class="article-content">School: [[doctor.school]]</p>
+            <!-- Cannot put doctor and user ID in -->
+            <a v-on:click = "disconnect(doctor)" class='test'><button class="btn btn-default">Disconnect</button></a>
+        </div>
+    </article>
+</div>
+
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        delimiters:['[[',']]'],
+        data: {
+            message: "Hello",
+            docs:{{docs|tojson|safe}},
+            current_userId: {{current_user.id}}
+        },
+        methods: {
+            disconnect : function(doctor){
+                var info={
+                    'patient':this.current_userId, 
+                    'doctor' :doctor.id
+                 };
+                $.ajax({ 
+                     type: "POST" , 
+                     url: "{{ url_for('removeConnection') }}" ,
+                     data:JSON.stringify(info, null, '\t' ), 
+                    contentType: "application/json; charset=utf-8" , 
+                    success: function(resp) { 
+                      console.log("success"); 
+                      location.reload(); } 
+                }); 
+            }
+        }
+    });
+</script>
+
+{% endblock content %}
+
+
+

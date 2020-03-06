@@ -1,0 +1,46 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<h4>My Patients</h4>
+<div id="app">
+    <article v-for = "patient in pts" class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+
+                <a class="mr-2" href="#">[[patient.first_name]] [[patient.last_name]]</a>
+                <small class="text-muted">[[patient.email]]</small>
+            </div>
+            <p class="article-content">Notes: [[patient.notes]]</p>
+            <p class="article-content">Height: [[patient.height]] in.</p>
+            <p class="article-content">Weight: [[patient.weight]] lbs.</p>
+            <form if = "render_report" method = "post" action = "{{url_for('renderForm')}}">
+                <input type = "hidden" name = "patient_first_name" v-bind:value = "patient.first_name"></input>
+                <input type = "hidden" name = "patient_last_name" v-bind:value = "patient.last_name"></input>
+                <input type = "hidden" name = "patient_email" v-bind:value = "patient.email"></input>
+                <input type = "hidden" name = "patient_height" v-bind:value = "patient.height"></input>
+                <input type = "hidden" name = "patient_weight" v-bind:value = "patient.weight"></input>
+                <input type = "hidden" name = "patient_age" v-bind:value = "patient.age"></input>
+                <input type = "hidden" name = "patient_sex" v-bind:value = "patient.sex"></input>
+                <input type = "hidden" name = "patient_notes" v-bind:value = "patient.notes"></input>
+                <button value = "send" class = "btn btn-default">Print Patient Report</button>
+            </form>
+    
+        </div>
+    </article>
+</div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        delimiters:['[[',']]'],
+        data: {
+            pts:{{pts|tojson|safe}}
+        }
+    });
+</script>
+{% endblock content %}
+
+<!--
+                
+-->

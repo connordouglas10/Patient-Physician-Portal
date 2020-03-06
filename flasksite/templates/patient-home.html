@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block content %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<h3>Patient Home</h3>
+<p>Below is a list of all physicians. Choose who you would like to connect with.</p>
+
+<div id="app">
+    <article class="media content-section" v-for = "doctor in drs">
+        <div class="media-body">
+                <div class="article-metadata">
+                    <img class="rounded-circle account-img" style="max-height: 50px; max-width: 50px;" v-bind:src="'/static/pictures/'+doctor.image"></img>
+                    <a class="mr-2" href="#">[[doctor.first_name]] [[doctor.last_name]]</a>
+                    <small class="text-muted">[[doctor.email]]</small>
+                </div>
+                <h3><a class="article-title" href="#">Specialty: [[doctor.specialty]]</a></h3>
+                <p class="article-content">School: [[doctor.school]]</p>
+                <a v-on:click = "connect(doctor)" class='test'><button class="btn btn-default">Connect</button></a>
+        </div>    
+    </article>
+</div>
+    
+<script>
+    var app = new Vue({
+        el: '#app',
+        delimiters:['[[',']]'],
+        data: {
+            drs:{{physicians|tojson|safe}},
+            current_userId:{{current_user.id|tojson|safe}}
+        },
+        methods: {
+            connect : function(doctor){
+                var pt=this.current_userId;
+                var doc=doctor.id;
+                console.log("patient", pt); 
+                console.log("doc", doc); 
+                var info={'patient':pt, 'doctor' :doc};
+                console.log("blaj"); 
+                $.ajax({ 
+                    type: "POST" , 
+                    url:"{{ url_for('addConnection') }}" , 
+                    data:JSON.stringify(info, null, '\t' ),
+                    contentType: "application/json; charset=utf-8" ,
+                    success: function(resp) {
+                        console.log("success"); 
+                    } 
+                }); 
+            }   
+        }   
+    });
+</script>
+  
+{% endblock content %}

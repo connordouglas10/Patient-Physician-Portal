@@ -1,0 +1,32 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<h3>Physician Home</h3>
+<p>Below is a list of all patients. Click "My Patients" to see who has connected with you.</p>
+<div id="app">
+        <article class="media content-section" v-for = "patient in pts">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <img class="rounded-circle account-img" style="max-height: 50px; max-width: 50px;" v-bind:src="'/static/pictures/'+patient.image"></img>
+                    <a class="mr-2" href="#">[[patient.first_name]] [[patient.last_name]]</a>
+                    <small class="text-muted">[[patient.email]]</small>
+                </div>
+                <p class="article-content">[[patient.age]] yrs, [[patient.sex]]</p>
+                <p class="article-content">Notes: [[patient.notes]]</p>
+            </div>
+        </article>
+
+</div>
+
+<script>
+        var app = new Vue({
+            el: '#app',
+            delimiters:['[[',']]'],
+            data: {
+                pts:{{pts|tojson|safe}}
+                
+            }   
+        });
+</script>
+{% endblock content %}

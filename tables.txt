@@ -1,0 +1,41 @@
+class Patient(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String, nullable=False)
+    last_name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, unique=True, nullable=False)
+    image = db.Column(db.String, nullable=False, default='default.jpg')
+    password = db.Column(db.String(60), nullable=False)
+    sex = db.Column(db.String, nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    category = db.Column(db.String, nullable=False)
+    notes = db.Column(db.String, default='N/A')
+    height = db.Column(db.Integer)
+    weight = db.Column(db.Integer)
+
+class Physician(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String, nullable=False)
+    last_name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, unique=True, nullable=False)
+    image = db.Column(db.String, nullable=False, default='default.jpg')
+    password = db.Column(db.String(60), nullable=False)
+    sex = db.Column(db.String, nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    category = db.Column(db.Integer, nullable=False)
+    specialty = db.Column(db.String, default='N/A')
+    school = db.Column(db.String, default='N/A')
+
+class Users(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String, nullable=False)
+    last_name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, unique=True, nullable=False)
+    image = db.Column(db.String, nullable=False, default='default.jpg')
+    age = db.Column(db.Integer, nullable=False)
+    password = db.Column(db.String(60), nullable=False)
+    category = db.Column(db.Integer, nullable=False)
+
+class Connection(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, nullable=False)
+    physician_id = db.Column(db.Integer, nullable=False)
